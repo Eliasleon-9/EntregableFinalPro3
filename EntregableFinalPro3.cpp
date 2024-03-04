@@ -31,6 +31,7 @@ public:
     double get_Precio() const { return dPrecio; }
     int get_Paginas() const { return nPaginas; }
     // Metodos de modificacion de los atributos
+    void set_ISBN(int isbn) { nISBN = isbn; }
     void set_Titulo(const string& titulo) { sTitulo = titulo; }
     void set_Autor(const string& autor) { sAutor = autor; }
     void set_Publicacion(int publicacion) { nPublicacion = publicacion; }
@@ -45,7 +46,6 @@ private:
     string sNombre;
     string sApellido;
     string sEmail;
-
 public:
     Persona() : nID(0), sNombre(""), sApellido(""), sEmail("") {}
     Persona(int id, const string& nombre, const string& apellido, const string& email)
@@ -56,6 +56,7 @@ public:
     string get_Apellido() const { return sApellido; }
     string get_Email() const { return sEmail; }
     // Metodos de modificacion de los atributos
+    void set_ID(int id) { nID = id;}
     void set_Nombre(const string& nombre) { sNombre = nombre; }
     void set_Apellido(const string& apellido) { sApellido = apellido; }
     void set_Email(const string& email) { sEmail = email; }
@@ -64,30 +65,22 @@ public:
 class Usuario : public Persona {
 private:
     int nCelular;
-
 public:
     Usuario() : nCelular(0) {}
-
     Usuario(int id, const string& nombre, const string& apellido, const string& email, int celular)
         : Persona(id, nombre, apellido, email), nCelular(celular) {}
-
     int get_Celular() const { return nCelular; }
-
     void set_Celular(int celular) { nCelular = celular; }
 };
 // Definicion de la clase Bibliotecario
 class Bibliotecario : public Persona {
 private:
     double dSalario;
-
 public:
     Bibliotecario() : dSalario(0.0) {}
-
     Bibliotecario(int id, const string& nombre, const string& apellido, const string& email, double salario)
         : Persona(id, nombre, apellido, email), dSalario(salario) {}
-
     double get_Salario() const { return dSalario; }
-
     void set_Salario(double salario) { dSalario = salario; }
 };
 // Definición de la clase GestorLibros
@@ -97,7 +90,6 @@ private:
     int tamanoActual;
 public:
     GestorLibros() : tamanoActual(0) {}
-
     bool tituloRepetido(const string& titulo, int cantidad) const {
         for (int i = 0; i < cantidad; i++) {
             if (titulo == libros[i].get_Titulo()) {
@@ -106,7 +98,6 @@ public:
         }
         return false; // Si el titulo no esta repetido
     }
-
     void llenar() {
         string listaTitulo[] = {"Programacion I", "Programacion II", "Programacion III", "Aprende Linux", "Aprende php", "Aprende Java", "Calculo I", "Calculo II", "anlan", "La Metamorfosis"};
         string listaAutor[] = {"Jorge Luis", "Gabriel Garcia ", "George Orwell", "Miguel de Cervantes", "J.K. Rowling", "Homero", "Mark Twain", "Antoine de Saint", "George Orwell", "Franz Kafka"};
@@ -131,9 +122,8 @@ public:
             tamanoActual++;
         }
     }
-
     void mostrar() const {
-        if (tamanoActual == 0) {
+        if (tamanoActual == 0) { // Verifica si no hay libros llenados
             cout << "Datos no llenados." << endl;
             return;
         }
@@ -153,23 +143,24 @@ public:
     }
     // Funcion recursiva para buscar libros por titulo
     void buscar(int indice, int fin, const string& busqueda) const {
-    if (indice < fin) {
-        string tituloMinuscula = convertir(libros[indice].get_Titulo());
-        string autorMinuscula = convertir(libros[indice].get_Autor());
-        string generoMinuscula = convertir(libros[indice].get_Genero());
-        string precioStr = to_string(libros[indice].get_Precio());
-        string busquedaMinuscula = convertir(busqueda);
-        if (indice == 0) {
-            cout << setw(2) << right << "ISBN" << setw(10) << "Titulo" << setw(24) << "Autor" << setw(24) << "Anio" << setw(13) << "Genero" << setw(15) << "Precio" << setw(10) << "Paginas" << endl;
+        if (indice < fin) { //condicion base
+            // Convertir a minúsculas los atributos del libro y la cadena de búsqueda
+            string tituloMinuscula = convertir(libros[indice].get_Titulo());
+            string autorMinuscula = convertir(libros[indice].get_Autor());
+            string generoMinuscula = convertir(libros[indice].get_Genero());
+            string precioStr = to_string(libros[indice].get_Precio());
+            string busquedaMinuscula = convertir(busqueda);
+            if (indice == 0) { //mostrar el encabezado de la tabla
+                cout << setw(2) << right << "ISBN" << setw(10) << "Titulo" << setw(24) << "Autor" << setw(24) << "Anio" << setw(13) << "Genero" << setw(15) << "Precio" << setw(10) << "Paginas" << endl;
+            }
+            // Verificar si la busqueda coincide con el titulo, autor, genero o precio
+            if (tituloMinuscula.find(busquedaMinuscula) != string::npos || autorMinuscula.find(busquedaMinuscula) != string::npos || generoMinuscula.find(busquedaMinuscula) != string::npos || precioStr.find(busquedaMinuscula) != string::npos) {
+                //imprime los datos de los libros que coincidan con la busqueda
+                cout << left << setw(8) << libros[indice].get_ISBN() << setw(25) << libros[indice].get_Titulo() << setw(25) << libros[indice].get_Autor() << setw(11) << libros[indice].get_Publicacion() << setw(15) << libros[indice].get_Genero() << setw(10) << libros[indice].get_Precio() << setw(10) << libros[indice].get_Paginas() << endl;
+            }
+            buscar(indice + 1, fin, busqueda); // Llamada recursiva con el siguiente libro
         }
-        // Verificar si la búsqueda coincide con el título, autor, género o precio
-        if (tituloMinuscula.find(busquedaMinuscula) != string::npos || autorMinuscula.find(busquedaMinuscula) != string::npos || generoMinuscula.find(busquedaMinuscula) != string::npos || precioStr.find(busquedaMinuscula) != string::npos) {
-            //imprime los datos de los libros
-            cout << left << setw(8) << libros[indice].get_ISBN() << setw(25) << libros[indice].get_Titulo() << setw(25) << libros[indice].get_Autor() << setw(11) << libros[indice].get_Publicacion() << setw(15) << libros[indice].get_Genero() << setw(10) << libros[indice].get_Precio() << setw(10) << libros[indice].get_Paginas() << endl;
-        }
-        buscar(indice + 1, fin, busqueda); // Llamada recursiva con el siguiente libro
     }
-}
 };
 // Definicion de la clase GestorUsuarios
 class GestorUsuarios {
@@ -178,7 +169,7 @@ private:
     int tamanoActual;
 public:
     GestorUsuarios() : tamanoActual(0) {}
-    void llenar() { // Función para llenar el arreglo de usuarios con datos aleatorios
+    void llenar() { // Funcion para llenar el arreglo de usuarios con datos aleatorios
         string listaNombres[] = {"Juan", "Maria", "Luis", "Ana", "Carlos", "Laura", "Pedro", "Elena", "Javier", "Sofia"};
         string listaApellidos[] = {"Peralta", "Osinaga", "Rodriguez", "Escobar", "Lopez", "Gonzalez", "Mendoza", "Roca", "Garcia", "Torres"};
         srand(time(nullptr)); // Inicializar la semilla del generador de números aleatorios
@@ -188,11 +179,12 @@ public:
             int indiceApellido = rand() % 10; //generacion de numero randomico de 0 al 9
             int idAleatorio = i + 1;
             int celularAleatorio = (rand() % 2 + 6) * 10000000 + rand() % 10000000;
+            //asignar nombre y apellido de los arrays de acuerdo al indice generado randomicamente
             string nombreAleatorio = listaNombres[indiceNombre];
             string apellidoAleatorio = listaApellidos[indiceApellido];
             string emailAleatorio = nombreAleatorio + apellidoAleatorio + "@gmail.com";
             usuarios[i] = Usuario(idAleatorio, nombreAleatorio, apellidoAleatorio, emailAleatorio, celularAleatorio);
-            tamanoActual++;
+            tamanoActual++; // Incrementar el contador de usuarios
         }
     }
     void mostrar() const {  // Funcion para mostrar los datos de los usuarios
@@ -201,7 +193,7 @@ public:
             return;
         }
         cout << setw(5) << right << "User ID" << setw(14) << "Nombre" << setw(17) << "Apellido" << setw(12) << "Email" << setw(32) << "Celular" << endl;
-        for (int i = 0; i < tamanoActual; ++i) {
+        for (int i = 0; i < tamanoActual; ++i) { //imprimir datos de los usuarios
             cout << left << setw(15) << usuarios[i].get_ID() << setw(15) << usuarios[i].get_Nombre() << setw(15) << usuarios[i].get_Apellido() << setw(30) << usuarios[i].get_Email() << setw(15) << usuarios[i].get_Celular() << endl;
         }
     }
@@ -215,23 +207,24 @@ public:
     }
     // Funcion recursiva para buscar usuarios por nombre, apellido o nombre completo
     void buscar(int inicio, int fin, const string& busqueda) const {
-    if (inicio < fin) {  //condicion base
-        string nombreMinuscula = convertir(usuarios[inicio].get_Nombre()); //convertir las cadenas a minusculas
-        string apellidoMinuscula = convertir(usuarios[inicio].get_Apellido());
-        string emailMinuscula = convertir(usuarios[inicio].get_Email());
-        string celularStr = to_string(usuarios[inicio].get_Celular());
-        string busquedaMinuscula = convertir(busqueda);
-        if (inicio == 0) { // Si es la primera llamada, imprimir los titulos
-            cout << setw(5) << right << "User ID" << setw(14) << "Nombre" << setw(17) << "Apellido" << setw(12) << "Email" << setw(32) << "Celular" << endl;
+        if (inicio < fin) {  //condicion base
+            // Convertir a minusculas los atributos del usuario y la cadena de busqueda
+            string nombreMinuscula = convertir(usuarios[inicio].get_Nombre()); //convertir las cadenas a minusculas
+            string apellidoMinuscula = convertir(usuarios[inicio].get_Apellido());
+            string emailMinuscula = convertir(usuarios[inicio].get_Email());
+            string celularStr = to_string(usuarios[inicio].get_Celular());
+            string busquedaMinuscula = convertir(busqueda);
+            if (inicio == 0) { //mostrar el encabezado de la tabla
+                cout << setw(5) << right << "User ID" << setw(14) << "Nombre" << setw(17) << "Apellido" << setw(12) << "Email" << setw(32) << "Celular" << endl;
+            }
+            // Verifica si la busqueda coincide con el nombre, apellido o nombre completo
+            if (nombreMinuscula.find(busquedaMinuscula) != string::npos || apellidoMinuscula.find(busquedaMinuscula) != string::npos || (nombreMinuscula + " " + apellidoMinuscula).find(busquedaMinuscula) != string::npos || emailMinuscula.find(busquedaMinuscula) != string::npos || celularStr.find(busquedaMinuscula) != string::npos){
+                // Imprimir los datos del usuario que coincidan con la busqueda
+                cout << left << setw(15) << usuarios[inicio].get_ID() << setw(15) << usuarios[inicio].get_Nombre() << setw(15) << usuarios[inicio].get_Apellido() << setw(30) << usuarios[inicio].get_Email() << setw(15) << usuarios[inicio].get_Celular() << endl;
+            }
+            buscar(inicio + 1, fin, busqueda); //llamada recursiva con el siguiente usuario
         }
-        // Verifica si la busqueda coincide con el nombre, apellido o nombre completo
-        if (nombreMinuscula.find(busquedaMinuscula) != string::npos || apellidoMinuscula.find(busquedaMinuscula) != string::npos || (nombreMinuscula + " " + apellidoMinuscula).find(busquedaMinuscula) != string::npos || emailMinuscula.find(busquedaMinuscula) != string::npos || celularStr.find(busquedaMinuscula) != string::npos){
-            // Imprimir los datos del usuario
-            cout << left << setw(15) << usuarios[inicio].get_ID() << setw(15) << usuarios[inicio].get_Nombre() << setw(15) << usuarios[inicio].get_Apellido() << setw(30) << usuarios[inicio].get_Email() << setw(15) << usuarios[inicio].get_Celular() << endl;
-        }
-        buscar(inicio + 1, fin, busqueda); //llamada recursiva con el siguiente usuario
     }
-}
 };
 // Definicion de la clase GestorBibliotecarios
 class GestorBibliotecarios {
@@ -246,7 +239,7 @@ public:
         srand(time(nullptr)); // Inicializar la semilla del generador de números aleatorios
         tamanoActual = 0; // Reiniciar el contador para llenar desde el principio
         for (int i = 0; i < TAMANO; ++i) {
-            int indiceNombre = rand() % 10;
+            int indiceNombre = rand() % 10; //generar numero randomico del 0 al 9
             int indiceApellido = rand() % 10;
             int idAleatorio = i + 1;
             double salarioAleatorio = rand() % 1501 + 1500; // salario entre 1500 y 3000
@@ -259,12 +252,13 @@ public:
             cout << "Datos no llenados." << endl; // Mostrar mensaje si no hay datos
             return;
         }
+        //imprimir datos de los bibliotecarios
         cout << setw(5) << right << "Employee ID" << setw(10) << "Nombre" << setw(17) << "Apellido" << setw(12) << "Email" << setw(32) << "Salario" << endl;
         for (int i = 0; i < tamanoActual; ++i) {
             cout << left << setw(15) << bibliotecarios[i].get_ID() << setw(15) << bibliotecarios[i].get_Nombre() << setw(15) << bibliotecarios[i].get_Apellido() << setw(30) << bibliotecarios[i].get_Email() << bibliotecarios[i].get_Salario() << "Bs" << endl;
         }
     }
-    string convertir(const string& cadena) const { // Funcion para convertir una cadena a minúsculas
+    string convertir(const string& cadena) const { // Funcion para convertir una cadena a minusculas
         string resultado = cadena;
         for (char& c : resultado) {
             c = tolower(c);
@@ -273,23 +267,24 @@ public:
     }
     // Funcion recursiva para buscar bibliotecarios por nombre, apellido o nombre completo
     void buscar(int inicio, int fin, const string& busqueda) const {
-    if (inicio < fin) {
-        string nombreMinuscula = convertir(bibliotecarios[inicio].get_Nombre());
-        string apellidoMinuscula = convertir(bibliotecarios[inicio].get_Apellido());
-        string emailMinuscula = convertir(bibliotecarios[inicio].get_Email());
-        string salarioStr= to_string(bibliotecarios[inicio].get_Salario());
-        string busquedaMinuscula = convertir(busqueda);
-        if (inicio == 0) {
-            cout << setw(5) << right << "Employee ID" << setw(10) << "Nombre" << setw(17) << "Apellido" << setw(12) << "Email" << setw(32) << "Salario" << endl;
-        }
-        // Verifica si la busqueda coincide con el nombre, apellido o nombre completo
-        if (nombreMinuscula.find(busquedaMinuscula) != string::npos || apellidoMinuscula.find(busquedaMinuscula) != string::npos || (nombreMinuscula + " " + apellidoMinuscula).find(busquedaMinuscula) != string::npos || emailMinuscula.find(busquedaMinuscula) != string::npos || salarioStr.find(busquedaMinuscula) != string::npos) {
-            // Imprimir los datos del bibliotecario
-            cout << left << setw(15) << bibliotecarios[inicio].get_ID() << setw(15) << bibliotecarios[inicio].get_Nombre() << setw(15) << bibliotecarios[inicio].get_Apellido() << setw(30) << bibliotecarios[inicio].get_Email() << bibliotecarios[inicio].get_Salario() << "Bs" << endl;
-        }
+        if (inicio < fin) { //condicion base
+            // Convertir a minusculas los atributos del bibliotecario y la cadena de busqueda
+            string nombreMinuscula = convertir(bibliotecarios[inicio].get_Nombre());
+            string apellidoMinuscula = convertir(bibliotecarios[inicio].get_Apellido());
+            string emailMinuscula = convertir(bibliotecarios[inicio].get_Email());
+            string salarioStr= to_string(bibliotecarios[inicio].get_Salario());
+            string busquedaMinuscula = convertir(busqueda);
+            if (inicio == 0) { //mostrar el encabezado de la tabla
+                cout << setw(5) << right << "Employee ID" << setw(10) << "Nombre" << setw(17) << "Apellido" << setw(12) << "Email" << setw(32) << "Salario" << endl;
+            }
+            // Verifica si la busqueda coincide con el nombre, apellido o nombre completo
+            if (nombreMinuscula.find(busquedaMinuscula) != string::npos || apellidoMinuscula.find(busquedaMinuscula) != string::npos || (nombreMinuscula + " " + apellidoMinuscula).find(busquedaMinuscula) != string::npos || emailMinuscula.find(busquedaMinuscula) != string::npos || salarioStr.find(busquedaMinuscula) != string::npos) {
+                // Imprimir los datos del bibliotecario que coincidan con la busqueda
+                cout << left << setw(15) << bibliotecarios[inicio].get_ID() << setw(15) << bibliotecarios[inicio].get_Nombre() << setw(15) << bibliotecarios[inicio].get_Apellido() << setw(30) << bibliotecarios[inicio].get_Email() << bibliotecarios[inicio].get_Salario() << "Bs" << endl;
+            }
         buscar(inicio + 1, fin, busqueda); //llamada recursiva con el siguiente bibliotecario
+        }
     }
-}
 };
 // Menu para mostrar los listados
 void menuListados(GestorLibros& gestorL, GestorUsuarios& gestorU, GestorBibliotecarios& gestorB) {
@@ -336,10 +331,10 @@ void menuBusqueda(GestorLibros& gestorL, GestorUsuarios& gestorU, GestorBibliote
                 {
                 string sBusquedaL;
                 cout << "Ingrese el titulo del libro que desea buscar: ";
-                cin.ignore();
-                getline(cin, sBusquedaL);
+                cin.ignore(); // Limpiar el buffer de entrada
+                getline(cin, sBusquedaL); // Leer la cadena de búsqueda
                 cout << "\nResultados de la busqueda:" << endl;
-                gestorL.buscar(0, TAMANO, sBusquedaL);
+                gestorL.buscar(0, TAMANO, sBusquedaL); // Realizar la busqueda de libros
                 }
                 break;
             case 2:
@@ -349,7 +344,7 @@ void menuBusqueda(GestorLibros& gestorL, GestorUsuarios& gestorU, GestorBibliote
                 cin.ignore(); // Limpiar el buffer de entrada
                 getline(cin, sBusquedaU); // Leer la cadena de búsqueda
                 cout << "\nResultados de la busqueda:" << endl;
-                gestorU.buscar(0, TAMANO, sBusquedaU); // Realizar la búsqueda de usuarios
+                gestorU.buscar(0, TAMANO, sBusquedaU); // Realizar la busqueda de usuarios
                 }
                 break;
             case 3:
@@ -359,7 +354,7 @@ void menuBusqueda(GestorLibros& gestorL, GestorUsuarios& gestorU, GestorBibliote
                 cin.ignore(); // Limpiar el buffer de entrada
                 getline(cin, sBusquedaB); // Leer la cadena de búsqueda
                 cout << "\nResultados de la busqueda:" << endl;
-                gestorB.buscar(0, TAMANO, sBusquedaB); // Realizar la búsqueda de usuarios
+                gestorB.buscar(0, TAMANO, sBusquedaB); // Realizar la busqueda de usuarios
                 }
                 break;
             case 0:
@@ -405,9 +400,11 @@ void menuPrincipal(GestorLibros& gestorL, GestorUsuarios& gestorU, GestorBibliot
 }
 int main() {
     srand(time(nullptr));
+    // Crear instancias de los gestores de libros, usuarios y bibliotecarios
     GestorLibros gestorL;
     GestorUsuarios gestorU;
     GestorBibliotecarios gestorB;
+    // Llamar a la función del menú principal, pasando los gestores como argumentos
     menuPrincipal(gestorL, gestorU, gestorB);
     return 0;
 }
