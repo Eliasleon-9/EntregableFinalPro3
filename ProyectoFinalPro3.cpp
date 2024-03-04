@@ -19,23 +19,24 @@ private:
     int nPaginas;
 public:
     Libro() : nISBN(0), sTitulo(""), sAutor(""), nPublicacion(0), sGenero(""), dPrecio(0.0), nPaginas(0) {}
+    // Constructor para inicializar un libro
     Libro(int isbn, string titulo, string autor, int publicacion, string genero, double precio, int paginas)
         : nISBN(isbn), sTitulo(titulo), sAutor(autor), nPublicacion(publicacion), sGenero(genero), dPrecio(precio), nPaginas(paginas) {}
-
-    int getISBN() const { return nISBN; }
-    string getTitulo() const { return sTitulo; }
-    string getAutor() const { return sAutor; }
-    int getPublicacion() const { return nPublicacion; }
-    string getGenero() const { return sGenero; }
-    double getPrecio() const { return dPrecio; }
-    int getPaginas() const { return nPaginas; }
-
-    void setTitulo(const string& titulo) { sTitulo = titulo; }
-    void setAutor(const string& autor) { sAutor = autor; }
-    void setPublicacion(int publicacion) { nPublicacion = publicacion; }
-    void setGenero(const string& genero) { sGenero = genero; }
-    void setPrecio(double precio) { dPrecio = precio; }
-    void setPaginas(int paginas) { nPaginas = paginas; }
+    // Metodos de obtencion de los atributos
+    int get_ISBN() const { return nISBN; }
+    string get_Titulo() const { return sTitulo; }
+    string get_Autor() const { return sAutor; }
+    int get_Publicacion() const { return nPublicacion; }
+    string get_Genero() const { return sGenero; }
+    double get_Precio() const { return dPrecio; }
+    int get_Paginas() const { return nPaginas; }
+    // Metodos de modificacion de los atributos
+    void set_Titulo(const string& titulo) { sTitulo = titulo; }
+    void set_Autor(const string& autor) { sAutor = autor; }
+    void set_Publicacion(int publicacion) { nPublicacion = publicacion; }
+    void set_Genero(const string& genero) { sGenero = genero; }
+    void set_Precio(double precio) { dPrecio = precio; }
+    void set_Paginas(int paginas) { nPaginas = paginas; }
 };
 // Definicion de la clase Usuario
 class Usuario {
@@ -47,7 +48,7 @@ private:
     int nCelular;
 public:
     Usuario() : nUserID(0), sNombre(""), sApellido(""), sEmail(""), nCelular(0) {}
-    // Constructor para inicializar un usuario con valores especificos
+    // Constructor para inicializar un usuario
     Usuario(int id, string nombre, string apellido, string email, int celular)
         : nUserID(id), sNombre(nombre), sApellido(apellido), sEmail(email), nCelular(celular) {}
     // Metodos de obtencion de los atributos
@@ -97,7 +98,7 @@ public:
 
     bool tituloRepetido(const string& titulo, int cantidad) const {
         for (int i = 0; i < cantidad; i++) {
-            if (titulo == libros[i].getTitulo()) {
+            if (titulo == libros[i].get_Titulo()) {
                 return true; // Si el titulo esta repetido
             }
         }
@@ -108,8 +109,8 @@ public:
         string listaTitulo[] = {"Programacion I", "Programacion II", "Programacion III", "Aprende Linux", "Aprende php", "Aprende Java", "Calculo I", "Calculo II", "anlan", "La Metamorfosis"};
         string listaAutor[] = {"Jorge Luis", "Gabriel Garcia ", "George Orwell", "Miguel de Cervantes", "J.K. Rowling", "Homero", "Mark Twain", "Antoine de Saint", "George Orwell", "Franz Kafka"};
         string listaGenero[] = {"Ficcion", "Novela", "Codigos", "Clasico", "Fantasia", "Misterio", "Aventura", "Infantil", "Fabula", "Terror"};
-        srand(time(nullptr));
-        tamanoActual = 0;
+        srand(time(nullptr)); // Inicializar la semilla del generador de números aleatorios
+        tamanoActual = 0; // Reiniciar el contador para llenar desde el principio
         for (int i = 0; i < TAMANO; i++) {
             string tituloAleatorio;
             do {
@@ -137,7 +138,7 @@ public:
         //imprimir datos de los libros
         cout << setw(2) << right << "ISBN" << setw(10) << "Titulo" << setw(24) << "Autor" << setw(24) << "Anio" << setw(13) << "Genero" << setw(15) << "Precio" << setw(10) << "Paginas" << endl;
         for (int i = 0; i < tamanoActual; i++) {
-            cout << left << setw(8) << libros[i].getISBN() << setw(25) << libros[i].getTitulo() << setw(25) << libros[i].getAutor() << setw(11) << libros[i].getPublicacion() << setw(15) << libros[i].getGenero() << setw(10) << libros[i].getPrecio() << setw(10) << libros[i].getPaginas() << endl;
+            cout << left << setw(8) << libros[i].get_ISBN() << setw(25) << libros[i].get_Titulo() << setw(25) << libros[i].get_Autor() << setw(11) << libros[i].get_Publicacion() << setw(15) << libros[i].get_Genero() << setw(10) << libros[i].get_Precio() << setw(10) << libros[i].get_Paginas() << endl;
         }
     }
     // Funcion para convertir una cadena a minusculas
@@ -151,14 +152,14 @@ public:
     // Funcion recursiva para buscar libros por titulo
     void buscar(int indice, int fin, const string& sTitulo) const {
         if (indice < fin) { //Condicion base
-            string tituloMinuscula = convertir(libros[indice].getTitulo()); //convertir la cadena minuscula
+            string tituloMinuscula = convertir(libros[indice].get_Titulo()); //convertir la cadena minuscula
             string sTituloMinuscula = convertir(sTitulo);
-            if (indice == 0) { // Si es la primera llamada, imprimir los títulos
+            if (indice == 0) { // Si es la primera llamada, imprimir los titulos
                 cout << setw(2) << right << "ISBN" << setw(10) << "Titulo" << setw(24) << "Autor" << setw(24) << "Anio" << setw(13) << "Genero" << setw(15) << "Precio" << setw(10) << "Paginas" << endl;
             }
             size_t found = tituloMinuscula.find(sTituloMinuscula);
             if (found != string::npos) { //verifica si la busqueda coincide con el titulo de libro
-                cout << left << setw(8) << libros[indice].getISBN() << setw(25) << libros[indice].getTitulo() << setw(25) << libros[indice].getAutor() << setw(11) << libros[indice].getPublicacion() << setw(15) << libros[indice].getGenero() << setw(10) << libros[indice].getPrecio() << setw(10) << libros[indice].getPaginas() << endl;
+                cout << left << setw(8) << libros[indice].get_ISBN() << setw(25) << libros[indice].get_Titulo() << setw(25) << libros[indice].get_Autor() << setw(11) << libros[indice].get_Publicacion() << setw(15) << libros[indice].get_Genero() << setw(10) << libros[indice].get_Precio() << setw(10) << libros[indice].get_Paginas() << endl;
             }
             buscar(indice + 1, fin, sTitulo); //llamada recursiva con el siguiente libro
         }
@@ -198,7 +199,8 @@ public:
             cout << left << setw(15) << usuarios[i].get_UserID() << setw(15) << usuarios[i].get_Nombre() << setw(15) << usuarios[i].get_Apellido() << setw(30) << usuarios[i].get_Email() << setw(15) << usuarios[i].get_Celular() << endl;
         }
     }
-    string convertir(const string& cadena) const { // Funcion para convertir una cadena a minúsculas
+    // Funcion para convertir una cadena a minusculas
+    string convertir(const string& cadena) const { 
         string resultado = cadena;
         for (char& c : resultado) {
             c = tolower(c);
@@ -207,19 +209,19 @@ public:
     }
     // Funcion recursiva para buscar usuarios por nombre, apellido o nombre completo
     void buscar(int inicio, int fin, const string& busqueda) const {
-    if (inicio < fin) {
-        string nombreMinuscula = convertir(usuarios[inicio].get_Nombre());
+    if (inicio < fin) {  //condicion base
+        string nombreMinuscula = convertir(usuarios[inicio].get_Nombre()); //convertir las cadenas a minusculas
         string apellidoMinuscula = convertir(usuarios[inicio].get_Apellido());
         string busquedaMinuscula = convertir(busqueda);
-        if (inicio == 0) {
+        if (inicio == 0) { // Si es la primera llamada, imprimir los titulos
             cout << setw(5) << right << "User ID" << setw(14) << "Nombre" << setw(17) << "Apellido" << setw(12) << "Email" << setw(32) << "Celular" << endl;
         }
-        if (nombreMinuscula.find(busquedaMinuscula) != string::npos ||
-            apellidoMinuscula.find(busquedaMinuscula) != string::npos ||
-            (nombreMinuscula + " " + apellidoMinuscula).find(busquedaMinuscula) != string::npos) {
+        // Verifica si la busqueda coincide con el nombre, apellido o nombre completo
+        if (nombreMinuscula.find(busquedaMinuscula) != string::npos || apellidoMinuscula.find(busquedaMinuscula) != string::npos || (nombreMinuscula + " " + apellidoMinuscula).find(busquedaMinuscula) != string::npos) {
+            // Imprimir los datos del usuario
             cout << left << setw(15) << usuarios[inicio].get_UserID() << setw(15) << usuarios[inicio].get_Nombre() << setw(15) << usuarios[inicio].get_Apellido() << setw(30) << usuarios[inicio].get_Email() << setw(15) << usuarios[inicio].get_Celular() << endl;
         }
-        buscar(inicio + 1, fin, busqueda);
+        buscar(inicio + 1, fin, busqueda); //llamada recursiva con el siguiente usuario
     }
 }
 };
@@ -270,12 +272,12 @@ public:
         if (inicio == 0) {
             cout << setw(5) << right << "Employee ID" << setw(10) << "Nombre" << setw(17) << "Apellido" << setw(12) << "Email" << setw(32) << "Salario" << endl;
         }
-        if (nombreMinuscula.find(busquedaMinuscula) != string::npos ||
-            apellidoMinuscula.find(busquedaMinuscula) != string::npos ||
-            (nombreMinuscula + " " + apellidoMinuscula).find(busquedaMinuscula) != string::npos) {
+        // Verifica si la busqueda coincide con el nombre, apellido o nombre completo
+        if (nombreMinuscula.find(busquedaMinuscula) != string::npos || apellidoMinuscula.find(busquedaMinuscula) != string::npos || (nombreMinuscula + " " + apellidoMinuscula).find(busquedaMinuscula) != string::npos) {
+            // Imprimir los datos del bibliotecario
             cout << left << setw(15) << bibliotecarios[inicio].get_EmployeeID() << setw(15) << bibliotecarios[inicio].get_Nombre() << setw(15) << bibliotecarios[inicio].get_Apellido() << setw(30) << bibliotecarios[inicio].get_Email() << bibliotecarios[inicio].get_Salario() << "Bs" << endl;
         }
-        buscar(inicio + 1, fin, busqueda);
+        buscar(inicio + 1, fin, busqueda); //llamada recursiva con el siguiente bibliotecario
     }
 }
 };
