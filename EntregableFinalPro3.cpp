@@ -182,16 +182,16 @@ void mostrar(string bloque) const {
     }
     cout << "Datos de libros en bloques: " << endl;
     for (int i = 0; i < tamanoActual; i++) {
-        
+        cout << "--------------------------" << endl;
         cout << "ISBN: " << libros[i].get_ISBN() << endl;
         cout << "Titulo: " << libros[i].get_Titulo() << endl; 
         cout << "Autor: " << libros[i].get_Autor() << endl;
         cout << "Anio: " << libros[i].get_Publicacion() << endl; 
         cout << "Genero: " << libros[i].get_Genero() << endl; 
         cout << "Precio: " << libros[i].get_Precio() << endl;
-        cout << "Paginas: " << libros[i].get_Paginas() << endl << endl;
+        cout << "Paginas: " << libros[i].get_Paginas() << endl;
     }
-    cout << bloque << endl;
+    cout << "--------------------------" << endl;
 }
     // Funcion para convertir una cadena a minusculas
     string convertir(const string& cadena) const {
@@ -265,13 +265,14 @@ public:
         }
         cout << "Datos de Usuarios en Bloques:" << endl;
         for (int i = 0; i < tamanoActual; ++i) { //imprimir datos de los usuarios
-            //cout << "Usuario " << i+1 << ":" << endl;
+            cout << "-----------------------------" << endl;
             cout << "User ID: " << usuarios[i].get_ID() << endl;
             cout << "Nombre: " << usuarios[i].get_Nombre() << endl;
             cout << "Apellido: " << usuarios[i].get_Apellido() << endl;
             cout << "Email: " << usuarios[i].get_Email() << endl;
-            cout << "Celular: " << usuarios[i].get_Celular() << endl << endl;
+            cout << "Celular: " << usuarios[i].get_Celular() << endl;
         }
+        cout << "-----------------------------" << endl;
     }
     // Funcion para convertir una cadena a minusculas
     string convertir(const string& cadena) const { 
@@ -342,13 +343,14 @@ public:
         }
         cout << "Datos de Bibliotecarios en Bloques:" << endl;
         for (int i = 0; i < tamanoActual; ++i) { //imprimir datos de los bibliotecarios
-            //cout << "Bibliotecario " << i+1 << ":" << endl;
+            cout << "-----------------------------" << endl;
             cout << "Employee ID: " << bibliotecarios[i].get_ID() << endl;
             cout << "Nombre: " << bibliotecarios[i].get_Nombre() << endl;
             cout << "Apellido: " << bibliotecarios[i].get_Apellido() << endl;
             cout << "Email: " << bibliotecarios[i].get_Email() << endl;
-            cout << "Salario: " << bibliotecarios[i].get_Salario() << " Bs" << endl << endl;
+            cout << "Salario: " << bibliotecarios[i].get_Salario() << " Bs" << endl;
         }
+        cout << "-----------------------------" << endl;
     }
     string convertir(const string& cadena) const { // Funcion para convertir una cadena a minusculas
         string resultado = cadena;
