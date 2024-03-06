@@ -18,10 +18,26 @@ private:
     double dPrecio;
     int nPaginas;
 public:
-    Libro() : nISBN(0), sTitulo(""), sAutor(""), nPublicacion(0), sGenero(""), dPrecio(0.0), nPaginas(0) {}
-    // Constructor para inicializar un libro
-    Libro(int isbn, string titulo, string autor, int publicacion, string genero, double precio, int paginas)
-        : nISBN(isbn), sTitulo(titulo), sAutor(autor), nPublicacion(publicacion), sGenero(genero), dPrecio(precio), nPaginas(paginas) {}
+    //constructor por defecto
+    Libro() {
+        this->nISBN = 0;
+        this->sTitulo = "";
+        this->sAutor = "";
+        this->nPublicacion = 0;
+        this->sGenero = "";
+        this->dPrecio = 0.0;
+        this->nPaginas = 0;
+    }
+    // Constructor por atributos
+    Libro(int isbn, string titulo, string autor, int publicacion, string genero, double precio, int paginas) {
+        this->nISBN = isbn;
+        this->sTitulo = titulo;
+        this->sAutor = autor;
+        this->nPublicacion = publicacion;
+        this->sGenero = genero;
+        this->dPrecio = precio;
+        this->nPaginas = paginas;
+    }
     // Metodos de obtencion de los atributos
     int get_ISBN() const { return nISBN; }
     string get_Titulo() const { return sTitulo; }
@@ -47,9 +63,20 @@ private:
     string sApellido;
     string sEmail;
 public:
-    Persona() : nID(0), sNombre(""), sApellido(""), sEmail("") {}
-    Persona(int id, const string& nombre, const string& apellido, const string& email)
-        : nID(id), sNombre(nombre), sApellido(apellido), sEmail(email) {}
+    // Constructor por defecto
+    Persona() {
+        this->nID = 0;
+        this->sNombre = "sin nombre";
+        this->sApellido = "sin apellido";
+        this->sEmail = "sin email";
+    }
+    // Constructor por parametros
+    Persona(int id, string nombre, string apellido, string email) {
+        this->nID = id;
+        this->sNombre = nombre;
+        this->sApellido = apellido;
+        this->sEmail = email;
+    }
     // Metodos de obtencion de los atributos
     int get_ID() const { return nID; }
     string get_Nombre() const { return sNombre; }
@@ -66,10 +93,17 @@ class Usuario : public Persona {
 private:
     int nCelular;
 public:
-    Usuario() : nCelular(0) {}
-    Usuario(int id, const string& nombre, const string& apellido, const string& email, int celular)
-        : Persona(id, nombre, apellido, email), nCelular(celular) {}
+    // Constructor por defecto
+    Usuario() {
+        this->nCelular = 0;
+    }
+    //constructor por parametros
+    Usuario(int id, string nombre, string apellido, string email, int celular): Persona(id, nombre, apellido, email){
+        this->nCelular=celular;
+    }
+    // Metodos de obtencion de los atributos
     int get_Celular() const { return nCelular; }
+    // Metodos de modificacion de los atributos
     void set_Celular(int celular) { nCelular = celular; }
 };
 // Definicion de la clase Bibliotecario
@@ -77,10 +111,17 @@ class Bibliotecario : public Persona {
 private:
     double dSalario;
 public:
-    Bibliotecario() : dSalario(0.0) {}
-    Bibliotecario(int id, const string& nombre, const string& apellido, const string& email, double salario)
-        : Persona(id, nombre, apellido, email), dSalario(salario) {}
+    // Constructor por defecto
+    Bibliotecario() {
+        this->dSalario = 0.0;
+    }
+    //constructor por parametros
+    Bibliotecario(int id, string nombre, string apellido, string email, double salario): Persona(id, nombre, apellido, email){
+        this->dSalario=salario;
+    }
+    // Metodos de obtencion de los atributos
     double get_Salario() const { return dSalario; }
+    // Metodos de modificacion de los atributos
     void set_Salario(double salario) { dSalario = salario; }
 };
 // Definición de la clase GestorLibros
@@ -133,6 +174,25 @@ public:
             cout << left << setw(8) << libros[i].get_ISBN() << setw(25) << libros[i].get_Titulo() << setw(25) << libros[i].get_Autor() << setw(11) << libros[i].get_Publicacion() << setw(15) << libros[i].get_Genero() << setw(10) << libros[i].get_Precio() << setw(10) << libros[i].get_Paginas() << endl;
         }
     }
+    // Función para mostrar los datos de los libros en forma de bloque
+void mostrar(string bloque) const {
+    if (tamanoActual == 0) { // Verifica si no hay libros llenados
+        cout << "Datos no llenados." << endl; // Mostrar mensaje si no hay datos
+        return;
+    }
+    cout << "Datos de libros en bloques: " << endl;
+    for (int i = 0; i < tamanoActual; i++) {
+        
+        cout << "ISBN: " << libros[i].get_ISBN() << endl;
+        cout << "Titulo: " << libros[i].get_Titulo() << endl; 
+        cout << "Autor: " << libros[i].get_Autor() << endl;
+        cout << "Anio: " << libros[i].get_Publicacion() << endl; 
+        cout << "Genero: " << libros[i].get_Genero() << endl; 
+        cout << "Precio: " << libros[i].get_Precio() << endl;
+        cout << "Paginas: " << libros[i].get_Paginas() << endl << endl;
+    }
+    cout << bloque << endl;
+}
     // Funcion para convertir una cadena a minusculas
     string convertir(const string& cadena) const {
         string resultado = cadena;
@@ -187,7 +247,7 @@ public:
             tamanoActual++; // Incrementar el contador de usuarios
         }
     }
-    void mostrar() const {  // Funcion para mostrar los datos de los usuarios
+    void mostrar() const {  // Funcion para mostrar los datos de los usuarios en forma de tabla
         if (tamanoActual == 0) { // Verificar si no hay usuarios para mostrar
             cout << "Datos no llenados." << endl; // Mostrar mensaje si no hay datos
             return;
@@ -195,6 +255,22 @@ public:
         cout << setw(5) << right << "User ID" << setw(14) << "Nombre" << setw(17) << "Apellido" << setw(12) << "Email" << setw(32) << "Celular" << endl;
         for (int i = 0; i < tamanoActual; ++i) { //imprimir datos de los usuarios
             cout << left << setw(15) << usuarios[i].get_ID() << setw(15) << usuarios[i].get_Nombre() << setw(15) << usuarios[i].get_Apellido() << setw(30) << usuarios[i].get_Email() << setw(15) << usuarios[i].get_Celular() << endl;
+        }
+    }
+    // Función para mostrar los datos de los usuarios en forma de bloques
+    void mostrar(string bloque) const {
+        if (tamanoActual == 0) { // Verificar si no hay usuarios para mostrar
+            cout << "Datos no llenados." << endl; // Mostrar mensaje si no hay datos
+            return;
+        }
+        cout << "Datos de Usuarios en Bloques:" << endl;
+        for (int i = 0; i < tamanoActual; ++i) { //imprimir datos de los usuarios
+            //cout << "Usuario " << i+1 << ":" << endl;
+            cout << "User ID: " << usuarios[i].get_ID() << endl;
+            cout << "Nombre: " << usuarios[i].get_Nombre() << endl;
+            cout << "Apellido: " << usuarios[i].get_Apellido() << endl;
+            cout << "Email: " << usuarios[i].get_Email() << endl;
+            cout << "Celular: " << usuarios[i].get_Celular() << endl << endl;
         }
     }
     // Funcion para convertir una cadena a minusculas
@@ -247,7 +323,7 @@ public:
             tamanoActual++;
         }
     }
-    void mostrar() const {  // Funcion para mostrar los datos de los bibliotecarios
+    void mostrar() const {  // Funcion para mostrar los datos de los bibliotecarios en forma de tabla
         if (tamanoActual == 0) { // Verificar si no hay bibliotecarios para mostrar
             cout << "Datos no llenados." << endl; // Mostrar mensaje si no hay datos
             return;
@@ -256,6 +332,22 @@ public:
         cout << setw(5) << right << "Employee ID" << setw(10) << "Nombre" << setw(17) << "Apellido" << setw(12) << "Email" << setw(32) << "Salario" << endl;
         for (int i = 0; i < tamanoActual; ++i) {
             cout << left << setw(15) << bibliotecarios[i].get_ID() << setw(15) << bibliotecarios[i].get_Nombre() << setw(15) << bibliotecarios[i].get_Apellido() << setw(30) << bibliotecarios[i].get_Email() << bibliotecarios[i].get_Salario() << "Bs" << endl;
+        }
+    }
+    // Función para mostrar los datos de los bibliotecarios en forma de bloques
+    void mostrar(string bloque) const {
+        if (tamanoActual == 0) {  // Verificar si no hay bibliotecarios para mostrar
+            cout << "Datos no llenados." << endl; // Mostrar mensaje si no hay datos
+            return;
+        }
+        cout << "Datos de Bibliotecarios en Bloques:" << endl;
+        for (int i = 0; i < tamanoActual; ++i) { //imprimir datos de los bibliotecarios
+            //cout << "Bibliotecario " << i+1 << ":" << endl;
+            cout << "Employee ID: " << bibliotecarios[i].get_ID() << endl;
+            cout << "Nombre: " << bibliotecarios[i].get_Nombre() << endl;
+            cout << "Apellido: " << bibliotecarios[i].get_Apellido() << endl;
+            cout << "Email: " << bibliotecarios[i].get_Email() << endl;
+            cout << "Salario: " << bibliotecarios[i].get_Salario() << " Bs" << endl << endl;
         }
     }
     string convertir(const string& cadena) const { // Funcion para convertir una cadena a minusculas
@@ -299,13 +391,40 @@ void menuListados(GestorLibros& gestorL, GestorUsuarios& gestorU, GestorBibliote
         cin >> opcionListados;
         switch (opcionListados) {
             case 1:
-                gestorL.mostrar();
+                {
+                    char respuesta;
+                    cout << "Desea ver los datos en forma de tabla? (s/n): ";
+                    cin >> respuesta;
+                    if (respuesta == 's' || respuesta == 'S'){
+                        gestorL.mostrar();
+                    } else {
+                        gestorL.mostrar("bloque");
+                    }
+                }  
                 break;
             case 2:
-                gestorU.mostrar();
+                {
+                    char respuesta;
+                    cout << "Desea ver los datos en forma de tabla? (s/n): ";
+                    cin >> respuesta;
+                    if (respuesta == 's' || respuesta == 'S') {
+                        gestorU.mostrar();
+                    } else {
+                        gestorU.mostrar("Bloque");
+                    }
+                }
                 break;
             case 3:
-                gestorB.mostrar();
+                {
+                    char respuesta;
+                    cout << "Desea ver los datos en forma de tabla? (s/n): ";
+                    cin >> respuesta;
+                    if (respuesta == 's' || respuesta == 'S') {
+                        gestorB.mostrar();
+                    } else {
+                        gestorB.mostrar("Bloque");
+                    }
+                }
                 break;
             case 0:
                 cout << "Volviendo al Menu Principal..." << endl;
